@@ -31,7 +31,7 @@ class ProjectsController < ApplicationController
     @project = Project.new(projects_params)
     if @project.save
       flash[:success] = "Project created!"
-      redirect_to "/projects"
+      redirect_to @project
     else
       flash.now[:error] = @project.errors.full_messages
       render :new
