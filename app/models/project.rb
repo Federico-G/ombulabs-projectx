@@ -54,6 +54,10 @@ class Project < ApplicationRecord
     parent_id ? Project.where(parent_id: parent_id).where.not(id: id) : []
   end
 
+  def has_parent?
+    parent.present?
+  end
+
   private
 
   def add_position

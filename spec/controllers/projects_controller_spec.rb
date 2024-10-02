@@ -83,6 +83,22 @@ RSpec.describe ProjectsController, type: :controller do
       end
     end
 
+    context "with parent id and valid attributes" do
+      let(:child_project) { {title: "child", parent_id: 1} }
+
+      it "creates a new child project" do
+        expect {
+          post :create, params: {project: child_project}
+        }.to change(Project, :count).by(1)
+      end
+
+      it "redirects to the show page of the parent project" do
+        post :create, params: {project: child_project}
+
+        expect(response).to redirect_to Project.last.parent
+      end
+    end
+
     context "with parent id and no title" do
       let(:parent_project) { {title: "parent", id: 1} }
       let(:child_project) { {title: ""} }

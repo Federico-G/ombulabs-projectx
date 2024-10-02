@@ -13,6 +13,19 @@ RSpec.describe Project, type: :model do
     expect(parent.position).to be_nil
   end
 
+  context "#has_parent?" do
+    it "returns true if project has a parent" do
+      parent = create(:project)
+      child = create(:project, parent: parent)
+      expect(child.has_parent?).to be_truthy
+    end
+
+    it "returns false if project doesn't have a parent" do
+      parent = create(:project)
+      expect(parent.has_parent?).to be_falsey
+    end
+  end
+
   it "sets a position scoped within a parent" do
     parent = create(:project)
     sub_project1 = create(:project, parent: parent)
