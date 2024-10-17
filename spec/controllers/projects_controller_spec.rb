@@ -63,7 +63,11 @@ RSpec.describe ProjectsController, type: :controller do
       it "redirects to the show page for that project" do
         post :create, params: {project: valid_params}
 
-        expect(response).to redirect_to Project.last
+        # expect(response).to redirect_to Project.last
+
+        created_project = assigns(:project)
+        expect(response).to redirect_to(created_project)
+        expect(response).to have_http_status(:found)
       end
     end
 
