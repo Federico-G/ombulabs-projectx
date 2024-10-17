@@ -10,26 +10,27 @@ require "capybara/rspec"
 
 # When updating Capybara check if we still need this, newer versions already include this config
 # https://github.com/teamcapybara/capybara/blob/c7c22789b7aaf6c1515bf6e68f00bfe074cf8fc1/lib/capybara/registrations/drivers.rb
-Capybara.register_driver :headless_firefox do |app|
-  browser_options = ::Selenium::WebDriver::Firefox::Options.new
-  browser_options.args << "-headless"
-  Capybara::Selenium::Driver.new(app, browser: :firefox, options: browser_options)
-end
-Capybara.javascript_driver = :headless_firefox
-
-# Capybara.register_driver :selenium_chrome do |app|
-#   version = Capybara::Selenium::Driver.load_selenium
-#   options_key = Capybara::Selenium::Driver::CAPS_VERSION.satisfied_by?(version) ? :capabilities : :options
-#   browser_options = Selenium::WebDriver::Chrome::Options.new.tap do |opts|
-#     opts.add_argument('--headless')
-#     opts.add_argument('--disable-gpu') if Gem.win_platform?
-#     # Workaround https://bugs.chromium.org/p/chromedriver/issues/detail?id=2650&q=load&sort=-id&colspec=ID%20Status%20Pri%20Owner%20Summary
-#     opts.add_argument('--disable-site-isolation-trials')
-#   end
-#
-#   Capybara::Selenium::Driver.new(app, **{ :browser => :chrome, options_key => browser_options })
+# Capybara.register_driver :selenium do |app|
+#   # browser_options = ::Selenium::WebDriver::Firefox::Options.new
+#   # browser_options.args << "-headless"
+#   # Capybara::Selenium::Driver.new(app, browser: :firefox, options: browser_options)
+#   Capybara::Selenium::Driver.new(app)
 # end
-# Capybara.javascript_driver = :selenium_chrome
+# Capybara.javascript_driver = :selenium
+
+Capybara.register_driver :selenium_chrome do |app|
+  version = Capybara::Selenium::Driver.load_selenium
+  options_key = Capybara::Selenium::Driver::CAPS_VERSION.satisfied_by?(version) ? :capabilities : :options
+  browser_options = Selenium::WebDriver::Chrome::Options.new.tap do |opts|
+    opts.add_argument('--headless')
+    opts.add_argument('--disable-gpu') if Gem.win_platform?
+    # Workaround https://bugs.chromium.org/p/chromedriver/issues/detail?id=2650&q=load&sort=-id&colspec=ID%20Status%20Pri%20Owner%20Summary
+    opts.add_argument('--disable-site-isolation-trials')
+  end
+
+  Capybara::Selenium::Driver.new(app, **{ :browser => :chrome, options_key => browser_options })
+end
+Capybara.javascript_driver = :selenium_chrome
 
 Capybara.server = :puma, {Silent: true}
 
