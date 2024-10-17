@@ -2,5 +2,6 @@
   <%= render partial: 'update_estimates', locals: {estimate: @estimate} %>
   closeModal()
 <% else %>
+  <% provide(:button_text, 'Save Changes') %>
   updateModal("Edit estimate", "<%= j(render partial: 'modal_body') %>")
 <% end %>
