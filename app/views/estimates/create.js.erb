@@ -6,6 +6,7 @@
     addEstimate.remove()
     closeModal()
   <% else %>
+    <% provide(:button_text, 'Create') %>
     updateModal("New estimate", "<%= j(render partial: 'modal_body') %>")
   <% end %>
 })()

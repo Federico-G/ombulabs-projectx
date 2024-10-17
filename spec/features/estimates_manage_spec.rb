@@ -74,14 +74,24 @@ RSpec.describe "managing estimates", js: true do
     let!(:estimate) { create(:estimate, story: story, user: user) }
 
     before do
+      create(:story, project: project)
       visit project_path(id: project.id)
-      click_link "Edit Estimate"
     end
 
-    it "shows me an error message" do
+    it "shows me an error message when I edit an invalid estimate" do
+      click_link "Edit Estimate"
       set_estimates(21, 1)
       click_button "Save Changes"
       expect(page).to have_content "Validation error Worst case estimate should be greater than best case estimate."
+      expect(page).to have_button("Save Changes", id: "edit")
+    end
+
+    it "shows me an error message when I create an invalid estimate" do
+      click_link "Add Estimate"
+      set_estimates(21, 1)
+      click_button "Create"
+      expect(page).to have_content "Validation error Worst case estimate should be greater than best case estimate."
+      expect(page).to have_button("Create", id: "edit")
     end
   end
 
